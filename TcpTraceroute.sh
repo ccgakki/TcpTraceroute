@@ -119,7 +119,7 @@ node_2(){
 		done
 
 	[[ "${node}" == "1" ]] && ISP_name="上海联通9929" && ip=210.13.84.138
-	[[ "${node}" == "2" ]] && ISP_name="上海联通"	 && ip=112.65.63.1
+	[[ "${node}" == "2" ]] && ISP_name="上海联通" && ip=112.65.63.1
 	[[ "${node}" == "3" ]] && ISP_name="河南郑州联通" && ip=61.168.23.74
 	[[ "${node}" == "4" ]] && ISP_name="安徽合肥联通" && ip=112.122.10.26
 	[[ "${node}" == "5" ]] && ISP_name="江苏南京联通" && ip=58.240.53.78
@@ -146,7 +146,7 @@ node_4(){
 	ISP_name="北京教育网" && ip=202.205.6.30
 }
 node_5(){
-	echo -e "1.谷歌ipv6DNS\n2.CFipv6DNS\n3.阿里ipv6DNS\n4.腾讯ipv6DNS\n5.百度ipv6DNS\n6.上交ipv6DNS" && read -p "输入数字以选择:" node
+	echo -e "1.谷歌ipv6DNS\n2.CFipv6DNS\n3.阿里ipv6DNS\n4.腾讯ipv6DNS\n5.百度ipv6DNS\n6.北邮ipv6DNS" && read -p "输入数字以选择:" node
 
 	while [[ ! "${node}" =~ ^[1-6]$ ]]
 		do
@@ -159,7 +159,7 @@ node_5(){
 	[[ "${node}" == "3" ]] && ISP_name="阿里ipv6DNS" && ip=2400:3200::1
 	[[ "${node}" == "4" ]] && ISP_name="腾讯ipv6DNS" && ip=2402:4e00::
 	[[ "${node}" == "5" ]] && ISP_name="百度ipv6DNS" && ip=2400:da00::6666
-	[[ "${node}" == "6" ]] && ISP_name="成都移动IPV6" && ip=2409:8c62:e10:101::e2
+	[[ "${node}" == "6" ]] && ISP_name="北邮IPV6" && ip=2001:da8:202:10::36
 }
 
 result_alternative(){
@@ -215,10 +215,8 @@ result_all(){
 	#每跳检测1次
 	if echo $ISP_name | grep -qiw "ipv6"
 	then
-	echo -e "${Info} 测试路由 到 ${ISP_name} 中 ..."
 	nexttrace -q 1 $1 | grep -v -E 'NextTrace|leo'
 	else
-	echo -e "${Info} 测试路由 到 ${ISP_name} 中 ..."
 	nexttrace -T -q 1 $1 | grep -v -E 'NextTrace|leo'
 	fi
 	echo -e "${Info} 测试路由 到 ${ISP_name} 完成 ！"
