@@ -51,8 +51,9 @@ test_single(){
 			echo -e "${Info} 请重新输入" && read -p "输入 ip 地址:" ip
 		done
 	# 这里屏蔽版本信息和版权信息行的显示
-	nexttrace -T ${ip} | grep -v -E 'NextTrace|leo'
-	
+	echo -e "${Info} 测试路由 到 ${ip} 中 ..."
+	nexttrace -q 1 ${ip} | grep -v -E 'NextTrace|leo'
+	echo -e "${Info} 测试路由 到 ${ip} 完成 ！"
 	repeat_test_single
 }
 repeat_test_single(){
