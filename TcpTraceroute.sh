@@ -8,7 +8,7 @@ echo -e "${Green_font}
 #======================================
 # Project: worst_testrace For NextTrace
 # Version: 1.0
-# Author: KANIKIG (Modified By sjlleo)
+# Author: KANIKIG (Modified By ccgakki)
 # Github: https://github.com/KANIKIG
 #======================================
 ${Font_suffix}"
