@@ -107,7 +107,7 @@ node_1(){
 	[[ "${node}" == "4" ]] && ISP_name="上海CN2"	     && ip=58.32.32.1
 	[[ "${node}" == "5" ]] && ISP_name="广东深圳电信"	     && ip=116.6.211.41
 	[[ "${node}" == "6" ]] && ISP_name="广州电信(天翼云)" && ip=14.215.116.1
-  [[ "${node}" == "7" ]] && ISP_name="常州电信IPV6" && ip=240e:978:309::1:42
+	[[ "${node}" == "7" ]] && ISP_name="常州电信IPV6" && ip=240e:978:309::1:42
 }
 node_2(){
 	echo -e "1.上海联通9929\n2.上海联通\n3.河南郑州联通\n4.安徽合肥联通\n5.江苏南京联通\n6.浙江杭州联通\n7.常州联通ipv6" && read -p "输入数字以选择:" node
@@ -158,15 +158,21 @@ node_5(){
 	[[ "${node}" == "2" ]] && ISP_name="CFipv6DNS" && ip=2606:4700:4700::1111
 	[[ "${node}" == "3" ]] && ISP_name="阿里ipv6DNS" && ip=2400:3200::1
 	[[ "${node}" == "4" ]] && ISP_name="腾讯ipv6DNS" && ip=2402:4e00::
-  [[ "${node}" == "5" ]] && ISP_name="百度ipv6DNS" && ip=2400:da00::6666
-  [[ "${node}" == "6" ]] && ISP_name="成都移动IPV6" && ip=2409:8c62:e10:101::e2
+	[[ "${node}" == "5" ]] && ISP_name="百度ipv6DNS" && ip=2400:da00::6666
+	[[ "${node}" == "6" ]] && ISP_name="成都移动IPV6" && ip=2409:8c62:e10:101::e2
 }
 
 result_alternative(){
+	if echo $ISP_name | grep -qiw "ipv6"
+	then
 	echo -e "${Info} 测试路由 到 ${ISP_name} 中 ..."
-	nexttrace -T ${ip} | grep -v -E 'NextTrace|leo'
+	nexttrace -q 1 ${ip} | grep -v -E 'NextTrace|leo'
 	echo -e "${Info} 测试路由 到 ${ISP_name} 完成 ！"
-
+	else
+	echo -e "${Info} 测试路由 到 ${ISP_name} 中 ..."
+	nexttrace -T -q 1 ${ip} | grep -v -E 'NextTrace|leo'
+	echo -e "${Info} 测试路由 到 ${ISP_name} 完成 ！"
+	fi
 	repeat_test_alternative
 }
 
@@ -196,17 +202,25 @@ test_all(){
 	result_all	'120.197.96.1'	'广州移动120'
 	# 清华大学镜像站
 	result_all	'101.6.15.130'	'北京教育网'
-  #三网ipv6
-  result_all	'2409:8087:2001:10::2786:45cd'	'江苏移动ipv6'
-  result_all	'2001:da8:8000:1:202:120:2:100'	'上交ipv6'
-  result_all	'2001:da8:205:2060::188'	'北交ipv6'
+	#三网ipv6
+	result_all	'2409:8c54:1020:2:1:1:69:211d'	'深圳移动ipv6'
+	result_all	'2408:873c:3201::1:40'	'常州联通ipv6'
+	result_all	'240e:978:309::1:42'	'常州电信ipv6'
+	result_all	'2001:da8:8000:1:202:120:2:100'	'上交ipv6'
 	echo -e "${Info} 四网路由快速测试 已完成 ！"
 }
 result_all(){
 	ISP_name=$2
 	echo -e "${Info} 测试路由 到 ${ISP_name} 中 ..."
-  #每跳检测1次
+	#每跳检测1次
+	if echo $ISP_name | grep -qiw "ipv6"
+	then
+	echo -e "${Info} 测试路由 到 ${ISP_name} 中 ..."
+	nexttrace -q 1 $1 | grep -v -E 'NextTrace|leo'
+	else
+	echo -e "${Info} 测试路由 到 ${ISP_name} 中 ..."
 	nexttrace -T -q 1 $1 | grep -v -E 'NextTrace|leo'
+	fi
 	echo -e "${Info} 测试路由 到 ${ISP_name} 完成 ！"
 }
 
